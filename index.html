@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Advanced Calculator</title>
   <style>
+    /* Theme Classes */
     body {
       display: flex;
       justify-content: center;
@@ -12,104 +13,800 @@
       height: 100vh;
       background: #121212;
       font-family: Arial, sans-serif;
+      transition: background 0.5s ease;
+      margin: 0;
+      padding: 20px;
     }
-
+    
+    body.Theme-Heart {
+      background: linear-gradient(135deg, #330000 0%, #4d0000 50%, #660000 100%);
+    }
+    
+    body.Theme-Nature {
+      background: linear-gradient(135deg, #001a00 0%, #003300 50%, #004d00 100%);
+    }
+    
+    body.Theme-Star {
+      background: linear-gradient(135deg, #332900 0%, #4d3d00 50%, #665200 100%);
+    }
+    
+    body.Theme-Lavender {
+      background: linear-gradient(135deg, #1a0033 0%, #2b004d 50%, #3d0066 100%);
+    }
+    
+    body.Theme-Sky {
+      background: linear-gradient(135deg, #001a33 0%, #002b4d 50%, #003d66 100%);
+    }
+    
+    body.Theme-Comfort {
+      background: linear-gradient(135deg, #330033 0%, #4d004d 50%, #660066 100%);
+    }
+    
+    body.light-mode.Theme-Heart {
+      background: linear-gradient(135deg, #ffe6e6 0%, #ffb3b3 50%, #ff8080 100%);
+    }
+    
+    body.light-mode.Theme-Nature {
+      background: linear-gradient(135deg, #e6ffe6 0%, #b3ffb3 50%, #80ff80 100%);
+    }
+    
+    body.light-mode.Theme-Star {
+      background: linear-gradient(135deg, #fff9e6 0%, #fff2b3 50%, #ffeb80 100%);
+    }
+    
+    body.light-mode.Theme-Lavender {
+      background: linear-gradient(135deg, #f5e6ff 0%, #e0b3ff 50%, #cc80ff 100%);
+    }
+    
+    body.light-mode.Theme-Sky {
+      background: linear-gradient(135deg, #e6f7ff 0%, #b3e6ff 50%, #80d4ff 100%);
+    }
+    
+    body.light-mode.Theme-Comfort {
+      background: linear-gradient(135deg, #ffe6ff 0%, #ffb3ff 50%, #ff80ff 100%);
+    }
+    
+    body.light-mode {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+    
+    /* Theme buttons at the very top */
+    .theme-top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      padding: 10px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    body.light-mode .theme-top-bar {
+      background: rgba(255, 255, 255, 0.3);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .theme-top-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: 800px;
+      padding: 0 10px;
+    }
+    
+    .theme-top-button {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1.5rem;
+      position: relative;
+    }
+    
+    .theme-top-button:hover {
+      transform: translateY(-3px) scale(1.1);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .theme-top-button.active {
+      transform: scale(1.1);
+      border: 2px solid white;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    }
+    
+    body.light-mode .theme-top-button.active {
+      border: 2px solid #333;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .theme-top-button.active::after {
+      content: '✓';
+      position: absolute;
+      bottom: -5px;
+      right: -5px;
+      background: #b71c1c;
+      color: white;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    body.light-mode .theme-top-button.active::after {
+      background: #333;
+      color: white;
+    }
+    
+    body.Theme-Heart .theme-top-button.active::after {
+      background: #ff0000;
+    }
+    
+    body.Theme-Nature .theme-top-button.active::after {
+      background: #00ff00;
+    }
+    
+    body.Theme-Star .theme-top-button.active::after {
+      background: #ffff00;
+      color: #333;
+    }
+    
+    body.Theme-Lavender .theme-top-button.active::after {
+      background: #ff00ff;
+    }
+    
+    body.Theme-Sky .theme-top-button.active::after {
+      background: #00bfff;
+    }
+    
+    body.Theme-Comfort .theme-top-button.active::after {
+      background: #9370db;
+    }
+    
+    body.light-mode .theme-top-button {
+      background: rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(0, 0, 0, 0.25);
+    }
+    
+    /* Controls */
+    .controls {
+      position: fixed;
+      top: 70px;
+      right: 20px;
+      z-index: 10;
+    }
+    
+    .mode-toggle {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50px;
+      color: #b71c1c;
+      padding: 10px 20px;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+    
+    body.light-mode .mode-toggle {
+      background: rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      color: #333;
+    }
+    
+    .mode-toggle:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Calculator styles */
+    .calculator-container {
+      margin-top: 100px;
+    }
+    
     .calculator {
       background: #1e1e1e;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0px 8px 16px rgba(255, 0, 0, 0.3);
-      width: 340px;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0px 15px 35px rgba(255, 0, 0, 0.3);
+      width: 360px;
+      transition: all 0.3s ease;
     }
-
+    
+    body.Theme-Heart .calculator {
+      background: #330000;
+      box-shadow: 0px 15px 35px rgba(255, 0, 0, 0.4);
+      border: 2px solid rgba(255, 0, 0, 0.2);
+    }
+    
+    body.Theme-Nature .calculator {
+      background: #001a00;
+      box-shadow: 0px 15px 35px rgba(0, 255, 0, 0.4);
+      border: 2px solid rgba(0, 255, 0, 0.2);
+    }
+    
+    body.Theme-Star .calculator {
+      background: #332900;
+      box-shadow: 0px 15px 35px rgba(255, 255, 0, 0.4);
+      border: 2px solid rgba(255, 255, 0, 0.2);
+    }
+    
+    body.Theme-Lavender .calculator {
+      background: #1a0033;
+      box-shadow: 0px 15px 35px rgba(255, 0, 255, 0.4);
+      border: 2px solid rgba(255, 0, 255, 0.2);
+    }
+    
+    body.Theme-Sky .calculator {
+      background: #001a33;
+      box-shadow: 0px 15px 35px rgba(0, 191, 255, 0.4);
+      border: 2px solid rgba(0, 191, 255, 0.2);
+    }
+    
+    body.Theme-Comfort .calculator {
+      background: #330033;
+      box-shadow: 0px 15px 35px rgba(147, 112, 219, 0.4);
+      border: 2px solid rgba(147, 112, 219, 0.2);
+    }
+    
+    body.light-mode .calculator {
+      background: #f5f5f5;
+      box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.2);
+    }
+    
     #display {
       width: 100%;
-      height: 60px;
-      font-size: 1.8rem;
+      height: 70px;
+      font-size: 2.2rem;
       text-align: right;
-      margin-bottom: 15px;
-      padding: 10px;
+      margin-bottom: 20px;
+      padding: 15px;
       border: none;
       outline: none;
       background: #2a2a2a;
       color: #fff;
-      border-radius: 10px;
+      border-radius: 15px;
+      transition: all 0.3s ease;
     }
-
+    
+    body.Theme-Heart #display {
+      background: #4d0000;
+      color: #ffcccc;
+      border: 2px solid rgba(255, 0, 0, 0.3);
+    }
+    
+    body.Theme-Nature #display {
+      background: #003300;
+      color: #ccffcc;
+      border: 2px solid rgba(0, 255, 0, 0.3);
+    }
+    
+    body.Theme-Star #display {
+      background: #4d3d00;
+      color: #ffffcc;
+      border: 2px solid rgba(255, 255, 0, 0.3);
+    }
+    
+    body.Theme-Lavender #display {
+      background: #2b004d;
+      color: #ffccff;
+      border: 2px solid rgba(255, 0, 255, 0.3);
+    }
+    
+    body.Theme-Sky #display {
+      background: #002b4d;
+      color: #ccf2ff;
+      border: 2px solid rgba(0, 191, 255, 0.3);
+    }
+    
+    body.Theme-Comfort #display {
+      background: #4d004d;
+      color: #e6e6fa;
+      border: 2px solid rgba(147, 112, 219, 0.3);
+    }
+    
+    body.light-mode #display {
+      background: #ffffff;
+      color: #333;
+      border: 2px solid #ddd;
+    }
+    
     .buttons {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
+      gap: 12px;
     }
-
+    
     button {
-      padding: 18px;
-      font-size: 1.2rem;
+      padding: 20px;
+      font-size: 1.4rem;
       border: none;
-      border-radius: 10px;
+      border-radius: 15px;
       cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
+      transition: all 0.2s, transform 0.1s;
       background: #333;
       color: #fff;
+      font-weight: bold;
     }
-
+    
+    body.Theme-Heart button {
+      background: #4d0000;
+    }
+    
+    body.Theme-Nature button {
+      background: #003300;
+    }
+    
+    body.Theme-Star button {
+      background: #4d3d00;
+    }
+    
+    body.Theme-Lavender button {
+      background: #2b004d;
+    }
+    
+    body.Theme-Sky button {
+      background: #002b4d;
+    }
+    
+    body.Theme-Comfort button {
+      background: #4d004d;
+    }
+    
+    body.light-mode button {
+      background: #e0e0e0;
+      color: #333;
+    }
+    
     button:hover {
       background: #444;
       transform: scale(1.05);
     }
-
-    .operator { background: #b71c1c; }
-    .operator:hover { background: #d32f2f; }
-
+    
+    body.Theme-Heart button:hover {
+      background: #660000;
+    }
+    
+    body.Theme-Nature button:hover {
+      background: #004d00;
+    }
+    
+    body.Theme-Star button:hover {
+      background: #665200;
+    }
+    
+    body.Theme-Lavender button:hover {
+      background: #3d0066;
+    }
+    
+    body.Theme-Sky button:hover {
+      background: #003d66;
+    }
+    
+    body.Theme-Comfort button:hover {
+      background: #660066;
+    }
+    
+    body.light-mode button:hover {
+      background: #d0d0d0;
+    }
+    
+    .operator { 
+      background: #b71c1c; 
+    }
+    
+    body.Theme-Heart .operator { 
+      background: #ff0000; 
+    }
+    
+    body.Theme-Nature .operator { 
+      background: #00ff00; 
+    }
+    
+    body.Theme-Star .operator { 
+      background: #ffff00; 
+      color: #333;
+    }
+    
+    body.Theme-Lavender .operator { 
+      background: #ff00ff; 
+    }
+    
+    body.Theme-Sky .operator { 
+      background: #00bfff; 
+    }
+    
+    body.Theme-Comfort .operator { 
+      background: #9370db; 
+    }
+    
+    body.light-mode .operator {
+      background: #4a90e2;
+      color: white;
+    }
+    
+    .operator:hover { 
+      background: #d32f2f; 
+    }
+    
+    body.Theme-Heart .operator:hover { 
+      background: #ff3333; 
+    }
+    
+    body.Theme-Nature .operator:hover { 
+      background: #33ff33; 
+    }
+    
+    body.Theme-Star .operator:hover { 
+      background: #ffff33; 
+    }
+    
+    body.Theme-Lavender .operator:hover { 
+      background: #ff33ff; 
+    }
+    
+    body.Theme-Sky .operator:hover { 
+      background: #33ccff; 
+    }
+    
+    body.Theme-Comfort .operator:hover { 
+      background: #a67cff; 
+    }
+    
+    body.light-mode .operator:hover {
+      background: #5a9ae6;
+    }
+    
     .equal {
       background: #e53935;
-      grid-row: span 1;   /* Make it take up two rows */
+      grid-row: span 1;
     }
-    .equal:hover { background: #ff5252; }
-
-    .clear { background: #000; color: #ff1744; }
-    .clear:hover { background: #222; }
+    
+    body.Theme-Heart .equal { 
+      background: #ff3333; 
+    }
+    
+    body.Theme-Nature .equal { 
+      background: #33ff33; 
+    }
+    
+    body.Theme-Star .equal { 
+      background: #ffff33; 
+      color: #333;
+    }
+    
+    body.Theme-Lavender .equal { 
+      background: #ff33ff; 
+    }
+    
+    body.Theme-Sky .equal { 
+      background: #33ccff; 
+    }
+    
+    body.Theme-Comfort .equal { 
+      background: #a67cff; 
+    }
+    
+    body.light-mode .equal {
+      background: #2ecc71;
+      color: white;
+    }
+    
+    .equal:hover { 
+      background: #ff5252; 
+    }
+    
+    body.Theme-Heart .equal:hover { 
+      background: #ff6666; 
+    }
+    
+    body.Theme-Nature .equal:hover { 
+      background: #66ff66; 
+    }
+    
+    body.Theme-Star .equal:hover { 
+      background: #ffff66; 
+    }
+    
+    body.Theme-Lavender .equal:hover { 
+      background: #ff66ff; 
+    }
+    
+    body.Theme-Sky .equal:hover { 
+      background: #66d9ff; 
+    }
+    
+    body.Theme-Comfort .equal:hover { 
+      background: #c299ff; 
+    }
+    
+    body.light-mode .equal:hover {
+      background: #27ae60;
+    }
+    
+    .clear { 
+      background: #000; 
+      color: #ff1744; 
+    }
+    
+    body.Theme-Heart .clear { 
+      background: #1a0000; 
+      color: #ff6666; 
+    }
+    
+    body.Theme-Nature .clear { 
+      background: #000d00; 
+      color: #66ff66; 
+    }
+    
+    body.Theme-Star .clear { 
+      background: #1a1500; 
+      color: #ffff66; 
+    }
+    
+    body.Theme-Lavender .clear { 
+      background: #0d0019; 
+      color: #ff66ff; 
+    }
+    
+    body.Theme-Sky .clear { 
+      background: #000d1a; 
+      color: #66d9ff; 
+    }
+    
+    body.Theme-Comfort .clear { 
+      background: #1a001a; 
+      color: #c299ff; 
+    }
+    
+    body.light-mode .clear {
+      background: #333;
+      color: #ff6b6b;
+    }
+    
+    .clear:hover { 
+      background: #222; 
+    }
+    
+    body.Theme-Heart .clear:hover { 
+      background: #330000; 
+    }
+    
+    body.Theme-Nature .clear:hover { 
+      background: #001a00; 
+    }
+    
+    body.Theme-Star .clear:hover { 
+      background: #332900; 
+    }
+    
+    body.Theme-Lavender .clear:hover { 
+      background: #1a0033; 
+    }
+    
+    body.Theme-Sky .clear:hover { 
+      background: #001a33; 
+    }
+    
+    body.Theme-Comfort .clear:hover { 
+      background: #330033; 
+    }
+    
+    body.light-mode .clear:hover {
+      background: #444;
+    }
+    
+    /* Media queries */
+    @media (max-width: 768px) {
+      .theme-top-bar {
+        padding: 8px 0;
+      }
+      
+      .theme-top-buttons {
+        gap: 8px;
+      }
+      
+      .theme-top-button {
+        width: 40px;
+        height: 40px;
+        font-size: 1.3rem;
+      }
+      
+      .controls {
+        position: relative;
+        top: auto;
+        right: auto;
+        text-align: center;
+        margin: 10px 0;
+      }
+      
+      .calculator-container {
+        margin-top: 120px;
+      }
+      
+      .calculator {
+        width: 320px;
+        padding: 20px;
+      }
+      
+      #display {
+        height: 60px;
+        font-size: 1.8rem;
+      }
+      
+      button {
+        padding: 18px;
+        font-size: 1.2rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .theme-top-button {
+        width: 35px;
+        height: 35px;
+        font-size: 1.1rem;
+      }
+      
+      .theme-top-button.active::after {
+        width: 16px;
+        height: 16px;
+        font-size: 0.7rem;
+        bottom: -4px;
+        right: -4px;
+      }
+      
+      .calculator {
+        width: 300px;
+      }
+      
+      #display {
+        height: 55px;
+        font-size: 1.6rem;
+      }
+      
+      button {
+        padding: 16px;
+        font-size: 1.1rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="calculator">
-    <input type="text" id="display" disabled>
-    <div class="buttons">
-      <button onclick="percent()">%</button>
-      <button onclick="clearEntry()">CE</button>
-      <button class="clear" onclick="clearDisplay()">C</button>
-      <button onclick="backspace()">⌫</button>
+  <!-- Theme buttons at the very top -->
+  <div class="theme-top-bar">
+    <div class="theme-top-buttons" id="themeTopButtons">
+      <div class="theme-top-button active" data-theme="Default" title="Default Theme">🧮</div>
+      <div class="theme-top-button" data-theme="Heart" title="Heart Theme">❤️</div>
+      <div class="theme-top-button" data-theme="Nature" title="Nature Theme">🌳</div>
+      <div class="theme-top-button" data-theme="Comfort" title="Comfort Theme">🩷</div>
+      <div class="theme-top-button" data-theme="Star" title="Star Theme">🌟</div>
+      <div class="theme-top-button" data-theme="Sky" title="Sky Theme">🩵</div>
+      <div class="theme-top-button" data-theme="Lavender" title="Lavender Theme">🪻</div>
+    </div>
+  </div>
+  
+  <div class="controls">
+    <button class="mode-toggle" id="modeToggle">🌙 Dark Mode</button>
+  </div>
+  
+  <div class="calculator-container">
+    <div class="calculator">
+      <input type="text" id="display" disabled>
+      <div class="buttons">
+        <button onclick="percent()">%</button>
+        <button onclick="clearEntry()">CE</button>
+        <button class="clear" onclick="clearDisplay()">C</button>
+        <button onclick="backspace()">⌫</button>
 
-      <button onclick="reciprocal()">1/x</button>
-      <button onclick="square()">x²</button>
-      <button onclick="sqrt()">√x</button>
-      <button class="operator" onclick="appendValue('/')">÷</button>
+        <button onclick="reciprocal()">1/x</button>
+        <button onclick="square()">x²</button>
+        <button onclick="sqrt()">√x</button>
+        <button class="operator" onclick="appendValue('/')">÷</button>
 
-      <button onclick="appendValue('7')">7</button>
-      <button onclick="appendValue('8')">8</button>
-      <button onclick="appendValue('9')">9</button>
-      <button class="operator" onclick="appendValue('*')">×</button>
+        <button onclick="appendValue('7')">7</button>
+        <button onclick="appendValue('8')">8</button>
+        <button onclick="appendValue('9')">9</button>
+        <button class="operator" onclick="appendValue('*')">×</button>
 
-      <button onclick="appendValue('4')">4</button>
-      <button onclick="appendValue('5')">5</button>
-      <button onclick="appendValue('6')">6</button>
-      <button class="operator" onclick="appendValue('-')">−</button>
+        <button onclick="appendValue('4')">4</button>
+        <button onclick="appendValue('5')">5</button>
+        <button onclick="appendValue('6')">6</button>
+        <button class="operator" onclick="appendValue('-')">−</button>
 
-      <button onclick="appendValue('1')">1</button>
-      <button onclick="appendValue('2')">2</button>
-      <button onclick="appendValue('3')">3</button>
-      <button class="operator" onclick="appendValue('+')">+</button>
+        <button onclick="appendValue('1')">1</button>
+        <button onclick="appendValue('2')">2</button>
+        <button onclick="appendValue('3')">3</button>
+        <button class="operator" onclick="appendValue('+')">+</button>
 
-      <button onclick="toggleSign()">+/-</button>
-      <button onclick="appendValue('0')">0</button>
-      <button onclick="appendValue('.')">.</button>
-      <button class="equal" onclick="calculate()">=</button>
+        <button onclick="toggleSign()">+/-</button>
+        <button onclick="appendValue('0')">0</button>
+        <button onclick="appendValue('.')">.</button>
+        <button class="equal" onclick="calculate()">=</button>
+      </div>
     </div>
   </div>
 
   <script>
+    // Theme management variables
+    let isLightMode = false;
+    let currentTheme = 'Default';
+    const modeToggle = document.getElementById('modeToggle');
+    const themeTopButtons = document.getElementById('themeTopButtons');
     let display = document.getElementById("display");
-
+    
+    // Theme functions
+    function toggleMode() {
+      isLightMode = !isLightMode;
+      
+      if (isLightMode) {
+        document.body.classList.add('light-mode');
+        modeToggle.textContent = '☀️ Light Mode';
+      } else {
+        document.body.classList.remove('light-mode');
+        modeToggle.textContent = '🌙 Dark Mode';
+      }
+      
+      // Save mode to localStorage
+      localStorage.setItem('calcMode', isLightMode ? 'light' : 'dark');
+    }
+    
+    function changeTheme(theme) {
+      // Remove existing theme classes
+      document.body.classList.remove('Theme-Heart', 'Theme-Nature', 'Theme-Star', 
+                                    'Theme-Lavender', 'Theme-Sky', 'Theme-Comfort');
+      
+      // Remove active class from all theme buttons
+      document.querySelectorAll('.theme-top-button').forEach(button => {
+        button.classList.remove('active');
+      });
+      
+      // Add new theme class if not Default
+      if (theme !== 'Default') {
+        document.body.classList.add(`Theme-${theme}`);
+      }
+      
+      // Add active class to selected theme button
+      document.querySelector(`.theme-top-button[data-theme="${theme}"]`).classList.add('active');
+      
+      // Update current theme
+      currentTheme = theme;
+      
+      // Save theme to localStorage
+      localStorage.setItem('calcTheme', theme);
+    }
+    
+    // Initialize theme from localStorage
+    function initTheme() {
+      const savedTheme = localStorage.getItem('calcTheme');
+      const savedMode = localStorage.getItem('calcMode');
+      
+      if (savedTheme) {
+        changeTheme(savedTheme);
+      }
+      
+      if (savedMode === 'light') {
+        isLightMode = true;
+        document.body.classList.add('light-mode');
+        modeToggle.textContent = '☀️ Light Mode';
+      }
+    }
+    
+    // Calculator functions
     function appendValue(value) { display.value += value; }
     function clearDisplay() { display.value = ""; }
     function clearEntry() {
@@ -117,17 +814,102 @@
       display.value = display.value.slice(0, -(parts[parts.length - 1].length));
     }
     function backspace() { display.value = display.value.slice(0, -1); }
-
+    
     function calculate() {
-      try { display.value = eval(display.value); }
+      try { 
+        // Replace multiplication symbol for eval
+        let expression = display.value.replace(/×/g, '*').replace(/÷/g, '/');
+        display.value = eval(expression); 
+      }
       catch (error) { display.value = "Error"; }
     }
-
-    function percent() { display.value = parseFloat(display.value) / 100; }
-    function square() { display.value = Math.pow(parseFloat(display.value), 2); }
-    function sqrt() { display.value = Math.sqrt(parseFloat(display.value)); }
-    function reciprocal() { display.value = 1 / parseFloat(display.value); }
-    function toggleSign() { display.value = parseFloat(display.value) * -1; }
+    
+    function percent() { 
+      if (display.value) {
+        display.value = parseFloat(display.value) / 100; 
+      }
+    }
+    
+    function square() { 
+      if (display.value) {
+        display.value = Math.pow(parseFloat(display.value), 2); 
+      }
+    }
+    
+    function sqrt() { 
+      if (display.value) {
+        display.value = Math.sqrt(parseFloat(display.value)); 
+      }
+    }
+    
+    function reciprocal() { 
+      if (display.value && parseFloat(display.value) !== 0) {
+        display.value = 1 / parseFloat(display.value); 
+      } else if (parseFloat(display.value) === 0) {
+        display.value = "Error";
+      }
+    }
+    
+    function toggleSign() { 
+      if (display.value) {
+        display.value = parseFloat(display.value) * -1; 
+      }
+    }
+    
+    // Add keyboard support
+    document.addEventListener('keydown', function(e) {
+      const key = e.key;
+      
+      // Allow numeric keys
+      if (/[0-9]/.test(key)) {
+        appendValue(key);
+      }
+      // Allow operators
+      else if (['+', '-', '*', '/'].includes(key)) {
+        appendValue(key);
+      }
+      // Decimal point
+      else if (key === '.') {
+        appendValue('.');
+      }
+      // Enter or equal sign
+      else if (key === 'Enter' || key === '=') {
+        calculate();
+        e.preventDefault();
+      }
+      // Escape for clear
+      else if (key === 'Escape') {
+        clearDisplay();
+      }
+      // Backspace
+      else if (key === 'Backspace') {
+        backspace();
+      }
+    });
+    
+    // Initialize the app
+    function init() {
+      // Initialize theme
+      initTheme();
+      
+      // Theme button event listeners
+      document.querySelectorAll('.theme-top-button').forEach(button => {
+        button.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const theme = this.dataset.theme;
+          changeTheme(theme);
+        });
+      });
+      
+      // Mode toggle event listener
+      modeToggle.addEventListener('click', toggleMode);
+      
+      // Focus on display for better UX
+      display.focus();
+    }
+    
+    // Start the application
+    init();
   </script>
 </body>
 </html>
